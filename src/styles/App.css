@@ -7,4 +7,5 @@ html, body, #root {
   font-family: 'Montserrat', sans-serif;
   height: 100%;
   max-width: 100%;
+  background: linear-gradient(117.06deg, rgba(249, 251, 255, 0.68) 2.45%, rgba(214, 228, 255, 0.53) 98.12%);
 }
