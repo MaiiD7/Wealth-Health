@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-// breakpoints
+// Breakpoints
 const size = {
   mobile: "576px",
   tablet: "768px",

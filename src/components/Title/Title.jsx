@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { mobile, tablet, laptop } from "../../styles/breakpoints";
+import { mobile, tablet, laptop } from "../../utils/breakpoints";
 
 const TitleContainer = styled.div`
     display: flex;
@@ -25,7 +25,7 @@ const MainTitle = styled.h2`
   font-size: 18px;
   `}
 `
-
+// Display title
 const Title = () => {
 
   const location = useLocation().pathname;
@@ -33,6 +33,7 @@ const Title = () => {
   return ( 
     <TitleContainer>
       <MainTitle>Human Ressources</MainTitle>
+      {/* The direction and text of th link are based on the current location */}
       <Link style={{lineHeight: 1.2, fontSize: '15px'}} to={location === '/employees' ? '/' : '/employees'}>
         {location === '/employees' ? 'Home →' : 'View current employees →'}
       </Link>

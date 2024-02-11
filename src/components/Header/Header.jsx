@@ -1,11 +1,13 @@
 import styled from "styled-components";
-import { mobile, tablet, laptop } from "../../styles/breakpoints";
+import { mobile, tablet, laptop } from "../../utils/breakpoints";
+import { Link } from "react-router-dom";
 
-const Container = styled.div`
+const Container = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   padding: 20px;
+  width: fit-content;
 `
 
 const ImgContainer = styled.img`
@@ -21,11 +23,10 @@ const ImgContainer = styled.img`
   max-width: 32vw;
   `}
 `
-
+// Display header with the logo
 const Header = () => {
-
   return ( 
-    <Container>
+    <Container to={'/'}>
       <ImgContainer src="public\logo-horizontal.png"/>
     </Container>
    );
