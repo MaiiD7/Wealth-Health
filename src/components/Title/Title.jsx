@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { mobile, tablet, laptop } from "../../utils/breakpoints";
+import { mobile, tablet, laptop } from "../../utils/mediaQueries";
 
 const TitleContainer = styled.div`
     display: flex;

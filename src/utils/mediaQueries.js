@@ -1,25 +1,18 @@
 import { css } from 'styled-components';
 
-// Breakpoints
-const size = {
-  mobile: "576px",
-  tablet: "768px",
-  laptop: "1024px"
-};
-
 // Media Queries
 export const mobile = (inner) => css`
-  @media (max-width: ${size.mobile}) {
+  @media (max-width: ${props => props.theme.breakpoints.values.sm}px) {
     ${inner};
   }
 `;
 export const tablet = (inner) => css`
-  @media (max-width: ${size.tablet}) {
+  @media (max-width: ${props => props.theme.breakpoints.values.md}px}) {
     ${inner};
   }
 `;
 export const laptop = (inner) => css`
-  @media (max-width: ${size.laptop}) {
+  @media (max-width: ${props => props.theme.breakpoints.values.lg}px}) {
     ${inner};
   }
 `;

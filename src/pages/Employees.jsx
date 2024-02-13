@@ -1,3 +1,4 @@
+import DataGrid from "../components/DataGrid/DataGrid";
 import Header from "../components/Header/Header";
 import Title from "../components/Title/Title";
 
@@ -7,6 +8,7 @@ const Employees = () => {
     <>
       <Header />
       <Title />
+      <DataGrid />
     </>
    );
 }

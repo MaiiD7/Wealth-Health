@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mobile, tablet, laptop } from "../../utils/breakpoints";
+import { mobile, tablet, laptop } from "../../utils/mediaQueries";
 import { Link } from "react-router-dom";
 
 const Container = styled(Link)`
@@ -27,7 +27,7 @@ const ImgContainer = styled.img`
 const Header = () => {
   return ( 
     <Container to={'/'}>
-      <ImgContainer src="public\logo-horizontal.png"/>
+      <ImgContainer src="/logo-horizontal.png"/>
     </Container>
    );
 }
