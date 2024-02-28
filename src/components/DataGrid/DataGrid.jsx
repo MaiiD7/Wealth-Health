@@ -1,5 +1,4 @@
-import { Box } from "@mui/material";
-import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import CustomNoRowsOverlay from "./CustomNoRowsOverlay";
 import customGridToolbarQuickFilter from "./customGridToolbarQuickFilter";
 
