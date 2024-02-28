@@ -1,4 +1,6 @@
+import { Box } from "@mui/material";
 import Header from "../components/Header/Header";
+import HomeGrid from "../components/HomeGrid/HomeGrid";
 import Title from "../components/Title/Title";
 
 // Home Page
@@ -10,9 +12,10 @@ const Home = () => {
         <Title />
         <h2 style={{fontSize: '22px', fontWeight: 800, lineHeight: '20px', letterSpacing: '0em', textAlign: 'left', color: 'rgba(2, 32, 99, 1)', margin: '25px 0px 0px 120px',}}>Create Employee</h2>
       </div>
-      <div style={{flexGrow: 1}}>
-
-      </div>
+      <Box style={{flexGrow: 1, padding: '50px 120px', backgroundColor: 'red'}}>
+        <HomeGrid/>
+      </Box>
+      
     </div>
     
    );

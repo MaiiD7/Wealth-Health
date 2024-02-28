@@ -1,17 +1,18 @@
 import { GridToolbarQuickFilter } from "@mui/x-data-grid";
 import styled from "styled-components";
 
-const StyledToolbar = styled('div')(() => ({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  height: '80px',
-  width: '100%',
-  borderRadius: '8px 8px 0px 0px'
-}));
-
 const customGridToolbarQuickFilter = () => {
+
+  const StyledToolbar = styled('div')(() => ({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    height: '80px',
+    width: '100%',
+    borderRadius: '8px 8px 0px 0px'
+  }));
+
   return ( 
     <StyledToolbar style={{backgroundColor: '#d6e4ff'}}>
       <GridToolbarQuickFilter 
