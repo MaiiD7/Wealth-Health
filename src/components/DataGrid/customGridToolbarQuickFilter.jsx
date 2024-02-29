@@ -16,6 +16,7 @@ const customGridToolbarQuickFilter = () => {
   return ( 
     <StyledToolbar style={{backgroundColor: '#d6e4ff'}}>
       <GridToolbarQuickFilter 
+      debounceMs={2000}
       sx={{ 
         backgroundColor: 'white',
         marginLeft: '20px',

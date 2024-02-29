@@ -1,4 +1,5 @@
 import { Box, Container, Grid, Paper, styled } from "@mui/material";
+import { Input } from 'react-custom-input';
 
 const HomeGrid = () => {
 
@@ -18,7 +19,7 @@ const HomeGrid = () => {
         rowGap={6}
       >
         <Box gridColumn="span 4">
-          <Item>xs=8</Item>
+          <Input />
         </Box>
         <Box gridColumn="span 4">
           <Item>xs=4</Item>

@@ -12,7 +12,7 @@ const Home = () => {
         <Title />
         <h2 style={{fontSize: '22px', fontWeight: 800, lineHeight: '20px', letterSpacing: '0em', textAlign: 'left', color: 'rgba(2, 32, 99, 1)', margin: '25px 0px 0px 120px',}}>Create Employee</h2>
       </div>
-      <Box style={{flexGrow: 1, padding: '50px 120px', backgroundColor: 'red'}}>
+      <Box style={{flexGrow: 1, padding: '50px 120px'}}>
         <HomeGrid/>
       </Box>
       
