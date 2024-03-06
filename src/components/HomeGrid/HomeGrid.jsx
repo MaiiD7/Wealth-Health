@@ -1,49 +1,44 @@
-import { Box, Container, Grid, Paper, styled } from "@mui/material";
+import { Box } from "@mui/material";
 import { Input } from 'react-custom-input';
 
 const HomeGrid = () => {
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(3),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  }));
-
   return (
       <Box 
         display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        columnGap={10}
-        rowGap={6}
+        gridTemplateColumns="repeat(3, 1fr)"
+        columnGap={18}
+        rowGap={2}
       >
-        <Box gridColumn="span 4">
-          <Input />
+        <Box gridColumn="span 1" gridRow="1">
+          <Input label='Gender' placeholder='Gender' />
         </Box>
-        <Box gridColumn="span 4">
-          <Item>xs=4</Item>
+        <Box gridColumn="span 1" gridRow="2">
+          <Input label='First Name' placeholder='First Name' />
         </Box>
-        <Box gridColumn="span 4">
-          <Item>xs=4</Item>
+        <Box gridColumn="span 1" gridRow="3">
+          <Input label='Last Name' placeholder='Last Name' />
         </Box>
-        <Box gridColumn="span 4">
-          <Item>xs=4</Item>
+        <Box gridColumn="span 1" gridRow="4">
+          <Input label='Calendar' placeholder='Calendar' />
         </Box>
-        <Box gridColumn="span 4">
-          <Item>xs=8</Item>
+        <Box gridColumn="span 1" gridRow="1">
+          <Input label='Adress' placeholder='Adress' />
         </Box>
-        <Box gridColumn="span 4">
-          <Item>xs=8</Item>
+        <Box gridColumn="span 1" gridRow="2">
+          <Input label='City' placeholder='City' />
         </Box>
-        <Box gridColumn="span 4">
-          <Item>xs=4</Item>
+        <Box gridColumn="span 1" gridRow="3">
+          <Input label='Zip Code' placeholder='Zip Code' />
         </Box>
-        <Box gridColumn="span 4">
-          <Item>xs=8</Item>
+        <Box gridColumn="span 1" gridRow="4">
+          <Input select options={['Opt1', 'Opt2', 'Opt3']} label='State' placeholder='State' />
         </Box>
-        <Box gridColumn="span 4">
-          <Item>xs=8</Item>
+        <Box gridColumn="span 1" gridRow="1">
+          <Input label='Start Date' placeholder='Start Date' />
+        </Box>
+        <Box gridColumn="span 1" gridRow="2">
+          <Input select options={['Opt1', 'Opt2', 'Opt3']} label='Department' placeholder='Department' />
         </Box>
       </Box>    
   )
