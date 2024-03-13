@@ -1,5 +1,5 @@
+import { styled } from "@mui/material";
 import { GridToolbarQuickFilter } from "@mui/x-data-grid";
-import styled from "styled-components";
 
 const customGridToolbarQuickFilter = () => {
 
@@ -16,7 +16,7 @@ const customGridToolbarQuickFilter = () => {
   return ( 
     <StyledToolbar style={{backgroundColor: '#d6e4ff'}}>
       <GridToolbarQuickFilter 
-      debounceMs={2000}
+      debounceMs={1200}
       sx={{ 
         backgroundColor: 'white',
         marginLeft: '20px',
