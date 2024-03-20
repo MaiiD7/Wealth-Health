@@ -1,17 +1,11 @@
 /* Import Montserrat Font from Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;700;900&display=swap');
 
+/* General style */
 html, body, #root {
   margin: 0;
   padding: 0;
   font-family: 'Montserrat', sans-serif;
   height: 100%;
   max-width: 100%;
-}
-
-.MuiDataGrid-overlayWrapperInner {
-  height:  400px !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

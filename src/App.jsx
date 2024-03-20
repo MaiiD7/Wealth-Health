@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Employees from './pages/Employees';
 
+// MUI
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { ThemeProvider } from 'styled-components';
 

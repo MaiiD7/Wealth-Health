@@ -13,41 +13,42 @@ const customGridToolbarQuickFilter = () => {
     borderRadius: '8px 8px 0px 0px'
   }));
 
+  const StyledGridToolbarQuickFilter = styled(GridToolbarQuickFilter)({
+    backgroundColor: 'white',
+    marginLeft: '20px',
+    borderRadius: '5px',
+    padding: '5px',
+    borderBottom: 'none',
+    '& .MuiInput-underline:before': {
+      borderBottom: 'none',
+      '&:hover': {
+        borderBottom: 'none'
+      }
+    },
+    '& .MuiInputBase-root:after': {
+        borderBottom: 'none', // Remove the bottom border on focus
+        '&:hover': {
+          borderBottom: 'none'
+        }
+    },
+    '& .MuiInputBase-root': {
+      fontSize: '14px',
+      '&:hover': {
+        borderBottom: 'none',
+      },
+      '&:hover:not(.Mui-disabled, .Mui-error):before': {
+        borderBottom: 'none'
+      }
+    },
+    '[class$=MuiSvgIcon-root]': {
+      color: 'rgba(0, 0, 0, 0.54)'
+    }
+  })
+
+  // Retrun a search bar for the employees data grid
   return ( 
     <StyledToolbar style={{backgroundColor: '#d6e4ff'}}>
-      <GridToolbarQuickFilter 
-      debounceMs={1200}
-      sx={{ 
-        backgroundColor: 'white',
-        marginLeft: '20px',
-        borderRadius: '5px',
-        padding: '5px',
-        borderBottom: 'none',
-        '& .MuiInput-underline:before': {
-          borderBottom: 'none',
-          '&:hover': {
-            borderBottom: 'none'
-          }
-        },
-        '& .MuiInputBase-root:after': {
-            borderBottom: 'none', // Remove the bottom border on focus
-            '&:hover': {
-              borderBottom: 'none'
-            }
-        },
-        '& .MuiInputBase-root': {
-          fontSize: '14px',
-          '&:hover': {
-            borderBottom: 'none',
-          },
-          '&:hover:not(.Mui-disabled, .Mui-error):before': {
-            borderBottom: 'none'
-          }
-        },
-        '[class$=MuiSvgIcon-root]': {
-          color: 'rgba(0, 0, 0, 0.54)'
-        }
-      }}/>
+      <StyledGridToolbarQuickFilter debounceMs={1200} />
     </StyledToolbar>
   
   );

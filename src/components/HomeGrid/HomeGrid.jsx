@@ -1,104 +1,100 @@
-import { Box, RadioGroup, Radio, FormControlLabel, styled, Button, Snackbar, Alert } from "@mui/material";
-import { Input } from "@maiid7/react-custom-input";
-import { useState } from 'react';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import LocationCityIcon from '@mui/icons-material/LocationCity';
+import { Box, RadioGroup, Radio, FormControlLabel, styled } from "@mui/material";
+import { useState } from "react";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
 import { useEffect } from "react";
-import { states, departments } from '../../data/data';
+import { states, departments, initialFormState } from "../../data/data";
+import FormSubmission from "./FormSubmission";
 
-const HomeGrid = () => {
+// Import from Custom Packages published on NPM
+import { Input } from "@maiid7/react-custom-input";
 
-  const StyledDatePicker = styled(DatePicker)(() => ({
-    width: "90%",
-    '& .MuiInputBase-input': {
-      paddingLeft: '0px'
-    },
-    "& .MuiOutlinedInput-root": {
+const StyledDatePicker = styled(DatePicker)(() => ({
+  width: "90%",
+  "& .MuiInputBase-input": {
+    paddingLeft: "0px",
+  },
+  "& .MuiOutlinedInput-root": {
     " > fieldset": {
-      borderColor: 'rgba(214, 228, 255, 1)',
-      padding: '0px 10px'
+      borderColor: "rgba(214, 228, 255, 1)",
+      padding: "0px 10px",
     },
     "&:hover > fieldset": { borderColor: "rgba(60, 120, 238, 1)" },
     "&:focus-visible > fieldset": { borderColor: "rgba(60, 120, 238, 1)" },
     height: "38px",
-    fontSize: '14px',
-    padding: '0px 10px',
+    fontSize: "14px",
+    padding: "0px 10px",
     borderRadius: "8px",
-    backgroundColor: 'white'
-    },
-  }));
+    backgroundColor: "white",
+  },
+}));
 
-  const initialFormState = {
-    id: crypto.randomUUID(),
-    gender: "female",
-    genderData: "Non-Binary",
-    firstName: "",
-    lastName: "",
-    birthDate: null,
-    address: "",
-    city: "",
-    zipCode: "",
-    state: states[0],
-    startDate: null,
-    department: departments[0],
- }
-
+const HomeGrid = () => {
+  // useStates for Form Submission
   const [disabledButton, setDisabledButton] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [form, setForm] = useState(initialFormState);
 
+  // RegExp passed to Custom Input as props (for validation)
   const simpleTextRegExp = /^[a-z][a-z '-]{0,31}$|^$/i;
   const zipCodeRegExp = /^[0-9]{5}(?:-[0-9]{4})?$/;
 
+  // Initialize form with state from data.js
+  const [form, setForm] = useState(initialFormState);
+
+  // ****************** //
+  // **** Handlers **** //
+  // ****************** //
+
+  // For Input
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
-    setForm(prevState => ({
+    setForm((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  const handleDateChange = (name, newDate) => {
-    setForm(prevState => ({
-      ...prevState,
-      [name]: newDate,
-    }));
-  };
-
+  // For Date Picker and Select
   const handleValueChange = (name, newValue) => {
-    setForm(prevState => ({
+    setForm((prevState) => ({
       ...prevState,
       [name]: newValue,
     }));
   };
 
-  const validateForm = () => {
+  // UseEffect to handle form validation
+  // Submit Button disabled if empty or unvalid inputs
+  useEffect(() => {
+    if (
+      document.querySelectorAll(".error").length !== 0 ||
+      Object.values(form).includes("") ||
+      Object.values(form).includes(null)
+    ) {
+      setDisabledButton(true);
+    } else {
+      setDisabledButton(false);
+    }
+  }, [form]);
+
+  // Form Submission
+  // Add new employee to array in localStorage
+  // Reset Form and display SnackBar
+  const submitForm = () => {
     const employees = JSON.parse(localStorage.getItem("employees"));
 
-    localStorage.setItem("employees", JSON.stringify(employees ? [
-      ...employees, form
-    ] : [form]))
+    localStorage.setItem(
+      "employees",
+      JSON.stringify(employees ? [...employees, form] : [form])
+    );
 
     setForm(initialFormState);
     setSnackbarOpen(true);
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false)
-  }
-
-  useEffect(() => {
-
-    if (document.querySelectorAll('.error').length !== 0 || Object.values(form).includes("") || Object.values(form).includes(null)) {
-      setDisabledButton(true);
-    } else {
-      setDisabledButton(false);
-    }
-  }, [form])
-
+  // Return Form Grid with custom Inputs
   return (
     <>
       <Box
@@ -108,6 +104,7 @@ const HomeGrid = () => {
         rowGap={2}
         sx={{ flexGrow: 0.5 }}
       >
+
         <Box
           gridColumn="span 1"
           gridRow="1"
@@ -119,9 +116,11 @@ const HomeGrid = () => {
             position: "relative",
           }}
         >
+          
+          {/* Gender Radio and Input Container */}
           <RadioGroup
             row
-            name='gender'
+            name="gender"
             value={form.gender}
             onChange={handleInputChange}
             sx={{
@@ -148,15 +147,41 @@ const HomeGrid = () => {
               label="Personalize"
             />
           </RadioGroup>
+
           {form.gender === "other" && (
-            <Input style={{ marginTop: "28px" }} placeholder="Gender" name="genderData" value={form.genderData} onChange={handleInputChange} regExp={simpleTextRegExp} />
+            <Input
+              style={{ marginTop: "28px" }}
+              placeholder="Gender"
+              name="genderData"
+              value={form.genderData}
+              onChange={handleInputChange}
+              regExp={simpleTextRegExp}
+            />
           )}
         </Box>
+
+        {/* First Name Input */}
         <Box gridColumn="span 1" gridRow="2">
-          <Input label="First Name" placeholder="First Name" name="firstName" value={form.firstName} onChange={handleInputChange} regExp={simpleTextRegExp} />
+          <Input
+            label="First Name"
+            placeholder="First Name"
+            name="firstName"
+            value={form.firstName}
+            onChange={handleInputChange}
+            regExp={simpleTextRegExp}
+          />
         </Box>
+
+        {/* Last Name Input */}
         <Box gridColumn="span 1" gridRow="3">
-          <Input label="Last Name" placeholder="Last Name" name="lastName" value={form.lastName} onChange={handleInputChange} regExp={simpleTextRegExp} />
+          <Input
+            label="Last Name"
+            placeholder="Last Name"
+            name="lastName"
+            value={form.lastName}
+            onChange={handleInputChange}
+            regExp={simpleTextRegExp}
+          />
         </Box>
         <Box
           gridColumn="span 1"
@@ -167,20 +192,57 @@ const HomeGrid = () => {
             justifyContent: "flex-start",
           }}
         >
+          {/* Birth Date Picker */}
           <label style={{ marginBottom: "5px" }}>Birth Date</label>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <StyledDatePicker value={form.birthDate} onChange={(newDate) => handleDateChange('birthDate', newDate)} disableUnderline disableFuture sx={{width: '100%'}} format='DD/MM/YYYY'/>
+            <StyledDatePicker
+              value={form.birthDate}
+              onChange={(newDate) => handleValueChange("birthDate", newDate)}
+              disableUnderline
+              disableFuture
+              sx={{ width: "100%" }}
+              format="DD/MM/YYYY"
+            />
           </LocalizationProvider>
         </Box>
+
+        {/* Adress Input */}
         <Box gridColumn="span 1" gridRow="1">
-          <Input label="Adress" placeholder="Address" name="address" value={form.address} onChange={handleInputChange} />
+          <Input
+            label="Adress"
+            placeholder="Address"
+            name="address"
+            value={form.address}
+            onChange={handleInputChange}
+          />
         </Box>
+
+        {/* City Input */}
         <Box gridColumn="span 1" gridRow="2">
-          <Input label="City" placeholder="City" name="city" value={form.city} onChange={handleInputChange} regExp={simpleTextRegExp} icon={<LocationCityIcon/>} />
+          <Input
+            label="City"
+            placeholder="City"
+            name="city"
+            value={form.city}
+            onChange={handleInputChange}
+            regExp={simpleTextRegExp}
+            icon={<LocationCityIcon />}
+          />
         </Box>
+
+        {/* Zip Code Input */}
         <Box gridColumn="span 1" gridRow="3">
-          <Input label="Zip Code" placeholder="Zip Code" name="zipCode" value={form.zipCode} onChange={handleInputChange} regExp={zipCodeRegExp}/>
+          <Input
+            label="Zip Code"
+            placeholder="Zip Code"
+            name="zipCode"
+            value={form.zipCode}
+            onChange={handleInputChange}
+            regExp={zipCodeRegExp}
+          />
         </Box>
+
+        {/* State Select */}
         <Box gridColumn="span 1" gridRow="4">
           <Input
             select
@@ -189,7 +251,7 @@ const HomeGrid = () => {
             placeholder="State"
             name="state"
             value={form.state}
-            onChange={(newValue) => handleValueChange('state', newValue)}
+            onChange={(newValue) => handleValueChange("state", newValue)}
           />
         </Box>
         <Box
@@ -201,11 +263,21 @@ const HomeGrid = () => {
             justifyContent: "flex-start",
           }}
         >
+
+          {/* Start Date Picker */}
           <label style={{ marginBottom: "5px" }}>Start Date</label>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <StyledDatePicker value={form.startDate} onChange={(newDate) => handleDateChange('startDate', newDate)} disableUnderline sx={{ width: "100%" }} format='DD/MM/YYYY'/>
+            <StyledDatePicker
+              value={form.startDate}
+              onChange={(newDate) => handleValueChange("startDate", newDate)}
+              disableUnderline
+              sx={{ width: "100%" }}
+              format="DD/MM/YYYY"
+            />
           </LocalizationProvider>
         </Box>
+
+        {/* Department Select */}
         <Box gridColumn="span 1" gridRow="2">
           <Input
             select
@@ -214,56 +286,21 @@ const HomeGrid = () => {
             placeholder="Department"
             name="department"
             value={form.department}
-            onChange={(newValue) => handleValueChange('department', newValue)}
+            onChange={(newValue) => handleValueChange("department", newValue)}
           />
         </Box>
+
       </Box>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginRight: "35px",
-        }}
-      >
-        <Button
-          variant="contained"
-          disableElevation
-          disabled={disabledButton}
-          onClick={validateForm}
-          sx={{
-            textTransform: "none",
-            backgroundColor: "rgba(2, 32, 99, 1)",
-            borderRadius: "8px",
-            color: "rgba(214, 228, 255, 1)",
-            padding: "8px 16px",
-            width: "80px",
-            height: "35px",
-            fontSize: "14px",
-            position: "right",
-          }}
-          
-        >
-          Save
-        </Button>
-        <Snackbar
-          open={snackbarOpen}
-          onClose={handleCloseSnackbar}
-          sx={{borderRadius: '5px'}}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          autoHideDuration={3000}
-        >
-          <Alert
-            onClose={handleCloseSnackbar}
-            severity="info"
-            variant="filled"
-            sx={{ width: '100%', borderRadius: '5px' }}
-          >
-            New Employee Created !
-          </Alert>
-        </Snackbar>
-      </div>
+
+      {/* Custom Submit Button and success SnackBar */}
+      <FormSubmission
+        submitForm={submitForm}
+        disabledButton={disabledButton}
+        snackbarOpen={snackbarOpen}
+        setSnackbarOpen={setSnackbarOpen}
+      />
     </>
   );
-} 
+};
 
-export default HomeGrid
+export default HomeGrid;

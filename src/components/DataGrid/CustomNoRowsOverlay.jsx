@@ -26,6 +26,7 @@ const StyledGridOverlay = styled('div')(({ theme }) => ({
   },
 }));
 
+// Custom overlay for empty data grid
 const CustomNoRowsOverlay = () => (
   <StyledGridOverlay>
       <svg
