@@ -1,9 +1,12 @@
-import { Box, RadioGroup, Radio, FormControlLabel, styled, Button } from "@mui/material";
+import { Box, RadioGroup, Radio, FormControlLabel, styled, Button, Snackbar, Alert } from "@mui/material";
 import { Input } from 'react-custom-input';
 import { useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import { useEffect } from "react";
+import { states, departments } from '../../data/data';
 
 const HomeGrid = () => {
 
@@ -23,46 +26,78 @@ const HomeGrid = () => {
     fontSize: '14px',
     padding: '0px 10px',
     borderRadius: "8px",
-    backgroundColor: 'white',
-    
+    backgroundColor: 'white'
     },
   }));
 
-  const [gender, setGender] = useState("female");
-  const [genderData, setGenderData] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [birthDate, setBirthDate] = useState(null);
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [state, setState] = useState("");
-  const [startDate, setStartDate] = useState(null);
-  const [department, setDepartment] = useState("");
+  const initialFormState = {
+    id: crypto.randomUUID(),
+    gender: "female",
+    genderData: "Non-Binary",
+    firstName: "",
+    lastName: "",
+    birthDate: null,
+    address: "",
+    city: "",
+    zipCode: "",
+    state: states[0],
+    startDate: null,
+    department: departments[0],
+ }
 
-  const getAllInputValues = () => {
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [form, setForm] = useState(initialFormState);
+
+  const simpleTextRegExp = /^[a-z][a-z '-]{0,31}$|^$/i;
+  const zipCodeRegExp = /^[0-9]{5}(?:-[0-9]{4})?$/;
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+
+    setForm(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleDateChange = (name, newDate) => {
+    setForm(prevState => ({
+      ...prevState,
+      [name]: newDate,
+    }));
+  };
+
+  const handleValueChange = (name, newValue) => {
+    setForm(prevState => ({
+      ...prevState,
+      [name]: newValue,
+    }));
+  };
+
+  const validateForm = () => {
     const employees = JSON.parse(localStorage.getItem("employees"));
 
-    const newEmployee = {
-      id: `${lastName}-${firstName}`,
-      gender: genderData !== "" ? genderData : gender,
-      firstName,
-      lastName,
-      birthDate,
-      address,
-      city,
-      zipCode,
-      state,
-      startDate,
-      department,
-    }
-
     localStorage.setItem("employees", JSON.stringify(employees ? [
-      ...employees, newEmployee
-    ] : [newEmployee]))
-    
-    console.log(employees)
+      ...employees, form
+    ] : [form]))
+
+    setForm(initialFormState);
+    setSnackbarOpen(true);
   };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false)
+  }
+
+  useEffect(() => {
+
+    if (document.querySelectorAll('.error').length !== 0 || Object.values(form).includes("") || Object.values(form).includes(null)) {
+      setDisabledButton(true);
+    } else {
+      setDisabledButton(false);
+    }
+  }, [form])
 
   return (
     <>
@@ -79,17 +114,18 @@ const HomeGrid = () => {
           sx={{
             display: "flex",
             alignItem: "center",
-            justifyContent: gender === "other" ? "flex-start" : "center",
+            justifyContent: form.gender === "other" ? "flex-start" : "center",
             flexDirection: "column",
             position: "relative",
           }}
         >
           <RadioGroup
             row
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
+            name='gender'
+            value={form.gender}
+            onChange={handleInputChange}
             sx={{
-              position: gender === "other" ? "absolute" : "static",
+              position: form.gender === "other" ? "absolute" : "static",
               bottom: "70%",
             }}
           >
@@ -112,15 +148,15 @@ const HomeGrid = () => {
               label="Personalize"
             />
           </RadioGroup>
-          {gender === "other" && (
-            <Input style={{ marginTop: "28px" }} placeholder="Gender" value={genderData} onChange={(e) => setGenderData(e.target.value)} />
+          {form.gender === "other" && (
+            <Input style={{ marginTop: "28px" }} placeholder="Gender" name="genderData" value={form.genderData} onChange={handleInputChange} regExp={simpleTextRegExp} />
           )}
         </Box>
         <Box gridColumn="span 1" gridRow="2">
-          <Input label="First Name" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
+          <Input label="First Name" placeholder="First Name" name="firstName" value={form.firstName} onChange={handleInputChange} regExp={simpleTextRegExp} />
         </Box>
         <Box gridColumn="span 1" gridRow="3">
-          <Input label="Last Name" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
+          <Input label="Last Name" placeholder="Last Name" name="lastName" value={form.lastName} onChange={handleInputChange} regExp={simpleTextRegExp} />
         </Box>
         <Box
           gridColumn="span 1"
@@ -133,26 +169,27 @@ const HomeGrid = () => {
         >
           <label style={{ marginBottom: "5px" }}>Birth Date</label>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <StyledDatePicker value={birthDate} onChange={(newDate) => setBirthDate(newDate)} disableUnderline disableFuture/>
+            <StyledDatePicker value={form.birthDate} onChange={(newDate) => handleDateChange('birthDate', newDate)} disableUnderline disableFuture sx={{width: '100%'}} format='DD/MM/YYYY'/>
           </LocalizationProvider>
         </Box>
         <Box gridColumn="span 1" gridRow="1">
-          <Input label="Adress" placeholder="Adress" value={address} onChange={(e) => setAddress(e.target.value)}/>
+          <Input label="Adress" placeholder="Address" name="address" value={form.address} onChange={handleInputChange} />
         </Box>
         <Box gridColumn="span 1" gridRow="2">
-          <Input label="City" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)}/>
+          <Input label="City" placeholder="City" name="city" value={form.city} onChange={handleInputChange} regExp={simpleTextRegExp} icon={<LocationCityIcon/>} />
         </Box>
         <Box gridColumn="span 1" gridRow="3">
-          <Input label="Zip Code" placeholder="Zip Code" value={zipCode} onChange={(e) => setZipCode(e.target.value)}/>
+          <Input label="Zip Code" placeholder="Zip Code" name="zipCode" value={form.zipCode} onChange={handleInputChange} regExp={zipCodeRegExp}/>
         </Box>
         <Box gridColumn="span 1" gridRow="4">
           <Input
             select
-            options={["Opt1", "Opt2", "Opt3"]}
+            options={states}
             label="State"
             placeholder="State"
-            value={state}
-            onChange={setState}
+            name="state"
+            value={form.state}
+            onChange={(newValue) => handleValueChange('state', newValue)}
           />
         </Box>
         <Box
@@ -166,17 +203,18 @@ const HomeGrid = () => {
         >
           <label style={{ marginBottom: "5px" }}>Start Date</label>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <StyledDatePicker value={startDate} onChange={(newDate) => setStartDate(newDate)} disableUnderline sx={{ marginBottom: "5px" }}/>
+            <StyledDatePicker value={form.startDate} onChange={(newDate) => handleDateChange('startDate', newDate)} disableUnderline sx={{ width: "100%" }} format='DD/MM/YYYY'/>
           </LocalizationProvider>
         </Box>
         <Box gridColumn="span 1" gridRow="2">
           <Input
             select
-            options={["Opt1", "Opt2", "Opt3", "Opt1", "Opt2", "Opt3"]}
+            options={departments}
             label="Department"
             placeholder="Department"
-            value={department}
-            onChange={setDepartment}
+            name="department"
+            value={form.department}
+            onChange={(newValue) => handleValueChange('department', newValue)}
           />
         </Box>
       </Box>
@@ -190,7 +228,8 @@ const HomeGrid = () => {
         <Button
           variant="contained"
           disableElevation
-          onClick={getAllInputValues}
+          disabled={disabledButton}
+          onClick={validateForm}
           sx={{
             textTransform: "none",
             backgroundColor: "rgba(2, 32, 99, 1)",
@@ -206,6 +245,22 @@ const HomeGrid = () => {
         >
           Save
         </Button>
+        <Snackbar
+          open={snackbarOpen}
+          onClose={handleCloseSnackbar}
+          sx={{borderRadius: '5px'}}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          autoHideDuration={3000}
+        >
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity="info"
+            variant="filled"
+            sx={{ width: '100%', borderRadius: '5px' }}
+          >
+            New Employee Created !
+          </Alert>
+        </Snackbar>
       </div>
     </>
   );

@@ -1,16 +1,16 @@
 import { DataGrid } from '@mui/x-data-grid';
 import CustomNoRowsOverlay from "./CustomNoRowsOverlay";
 import customGridToolbarQuickFilter from "./customGridToolbarQuickFilter";
-import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 
 const EmployeesTable = () => {
 
   const columns = [
     { field: 'firstName', headerName: 'First name', flex:  1 },
     { field: 'lastName', headerName: 'Last name', flex:  1 },
-    { field: 'birthDate', headerName: 'Date of Birth', flex:  1 },
+    { field: 'birthDate', headerName: 'Date of Birth', flex:  1, valueFormatter: params => dayjs(params?.value).format('DD/MM/YYYY') },
     { field: 'department', headerName: 'Department', flex:  1 },
-    { field: 'startDate', headerName: 'Start Date', flex:  1 },
+    { field: 'startDate', headerName: 'Start Date', flex:  1, valueFormatter: params => dayjs(params?.value).format('DD/MM/YYYY') },
     { field: 'address', headerName: 'Adress', flex:  1 },
     { field: 'city', headerName: 'City', flex:  1 },
     { field: 'state', headerName: 'State', flex:  1 },
@@ -59,10 +59,20 @@ const EmployeesTable = () => {
             alignItems: 'center',
             textAlign: 'center', // Center the text in cells
           },
+          '& .MuiDataGrid-virtualScroller': {
+            overflow: 'hidden'
+          },
+          '& .MuiDataGrid-overlayWrapper': {
+            height: '100%'
+          },
+          '& .MuiDataGrid-overlayWrapperInner': {
+            height: '100% !important'
+          }
           
         }}
         slots={{
           noRowsOverlay: CustomNoRowsOverlay,
+          noResultsOverlay: CustomNoRowsOverlay,
           toolbar: customGridToolbarQuickFilter
         }}
       />
