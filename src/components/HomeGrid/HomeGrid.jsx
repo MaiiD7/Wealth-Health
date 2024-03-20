@@ -1,5 +1,5 @@
 import { Box, RadioGroup, Radio, FormControlLabel, styled, Button, Snackbar, Alert } from "@mui/material";
-import { Input } from 'react-custom-input';
+import { Input } from "@maiid7/react-custom-input";
 import { useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
