@@ -27,7 +27,7 @@ const ImgContainer = styled.img`
 const Header = () => {
   return ( 
     <Container to={'/'}>
-      <ImgContainer src="/logo-horizontal.png"/>
+      <ImgContainer src="/logo-horizontal.png" alt="Wealth Health Logo"/>
     </Container>
    );
 }
